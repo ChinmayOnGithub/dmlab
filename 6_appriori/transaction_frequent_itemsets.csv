@@ -1,0 +1,7 @@
+itemset,count,support_percent
+"Butter",6,66.6667
+"Milk",6,66.6667
+"Bread",7,77.7778
+"Bread,Butter",4,44.4444
+"Bread,Milk",4,44.4444
+"Butter,Milk",4,44.4444

@@ -1,0 +1,10 @@
+product,region,Q1,Q2,Q3,Q4
+fiction,E,120,150,180,200
+Fiction,W,100,130,160,170
+fiction,S,80,90,110,120
+Non Fiction,E,90,100,120,130
+Non Fiction,W,70,85,95,110
+Non fiction,S,60,70,80,95
+comic,E,50,60,70,65
+Comic,W,40,50,55,60
+Comic,S,30,35,45,50
