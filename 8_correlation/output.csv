@@ -1,2 +1,2 @@
 Column1,Column2,Correlation,Type
-Screen_Time,Sleep_Hours,-0.959479,Strong negative correlation
+Sleep_Hours,Screen_Time,-0.959479,Strong negative correlation

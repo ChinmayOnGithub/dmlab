@@ -1,7 +1,5 @@
 Antecedent,Consequent,Support,Confidence
-"Bread","Butter",44.4444,57.1429
 "Butter","Bread",44.4444,66.6667
-"Bread","Milk",44.4444,57.1429
 "Milk","Bread",44.4444,66.6667
 "Butter","Milk",44.4444,66.6667
 "Milk","Butter",44.4444,66.6667

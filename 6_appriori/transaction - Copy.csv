@@ -1,0 +1,10 @@
+Milk,Bread,Butter,Eggs,Cheese
+Milk,Bread,0,0,Cheese
+0,Bread,0,Eggs,0
+0,Bread,Butter,0,0
+Milk,Bread,0,Eggs,0
+Milk,0,Butter,0,0
+0,Bread,Butter,0,0
+Milk,0,Butter,0,0
+Milk,Bread,Butter,0,Cheese
+Milk,Bread,Butter,0,0

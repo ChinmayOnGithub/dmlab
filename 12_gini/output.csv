@@ -1,8 +1,8 @@
 Attribute,Gain,Gini
-Temperature,1.291692,0.142857
-Humidity,1.237771,0.166667
-Wind,0.005978,0.660714
-Play,0.246750,0.584127
+Outlook,0.246750,0.342857
+Temperature,0.797429,0.071429
+Humidity,0.600651,0.166667
+Wind,0.048127,0.428571
 
-Best by Gain,Temperature,1.291692
-Best by Gini,Temperature,0.142857
+Best by Gain,Temperature,0.797429
+Best by Gini,Temperature,0.071429
