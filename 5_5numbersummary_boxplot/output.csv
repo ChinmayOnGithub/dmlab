@@ -3,6 +3,8 @@ Min,10
 Q1,13
 Median,18
 Q3,22
-Max,24
+Max,45
 IQR,9
+Lower_Whisker,10
+Upper_Whisker,24
 Outliers,45

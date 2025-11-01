@@ -4,297 +4,394 @@
 #include <string>
 #include <map>
 #include <algorithm>
-#include <cctype>
 #include <sstream>
-
 using namespace std;
 
-// Structure to hold CSV data
-struct CSVRecord
-{
-  vector<string> fields;
-};
+vector<vector<string>> dataset;
+vector<string> headers;
 
-// Utility functions
-string trim(const string &str)
+void loadCSV(string filename)
 {
-  size_t start = str.find_first_not_of(" \t\r\n");
-  if (start == string::npos)
-    return "";
-  size_t end = str.find_last_not_of(" \t\r\n");
-  return str.substr(start, end - start + 1);
-}
-
-string toLower(const string &str)
-{
-  string result = str;
-  transform(result.begin(), result.end(), result.begin(), ::tolower);
-  return result;
-}
-
-// Load CSV data with error handling
-vector<CSVRecord> loadCSV(const string &filename, vector<string> &headers)
-{
-  vector<CSVRecord> records;
   ifstream file(filename);
-
-  if (!file.is_open())
-  {
-    cerr << "Error: Could not open file " << filename << endl;
-    return records;
-  }
-
   string line;
-  // Read headers
-  if (getline(file, line))
-  {
-    stringstream ss(line);
-    string header;
-    while (getline(ss, header, ','))
-    {
-      headers.push_back(trim(header));
-    }
-  }
 
-  // Read data records
+  getline(file, line);
+  stringstream ss(line);
+  string header;
+  while (getline(ss, header, ','))
+    headers.push_back(header);
+
   while (getline(file, line))
   {
-    if (line.empty())
-      continue;
-
-    CSVRecord record;
     stringstream ss(line);
-    string field;
-
-    while (getline(ss, field, ','))
-    {
-      record.fields.push_back(trim(field));
-    }
-
-    // Ensure all records have same number of fields as headers
-    if (record.fields.size() == headers.size())
-    {
-      records.push_back(record);
-    }
+    vector<string> row;
+    string value;
+    while (getline(ss, value, ','))
+      row.push_back(value);
+    dataset.push_back(row);
   }
-
   file.close();
-  return records;
 }
 
-// Find column index with case-insensitive comparison
-int findColumnIndex(const vector<string> &headers, const string &columnName)
+void saveCSV(string filename, vector<vector<string>> result)
 {
-  string lowerColumnName = toLower(columnName);
+  ofstream file(filename);
   for (size_t i = 0; i < headers.size(); i++)
   {
-    if (toLower(headers[i]) == lowerColumnName)
+    file << headers[i];
+    if (i < headers.size() - 1)
+      file << ",";
+  }
+  file << "\n";
+  
+  for (auto &row : result)
+  {
+    for (size_t i = 0; i < row.size(); i++)
     {
-      return i;
+      file << row[i];
+      if (i < row.size() - 1)
+        file << ",";
     }
+    file << "\n";
+  }
+  file.close();
+}
+
+int findColumn(string name)
+{
+  for (size_t i = 0; i < headers.size(); i++)
+  {
+    if (headers[i] == name)
+      return i;
   }
   return -1;
 }
 
-// Rollup operation - count records by dimension
-void rollup(const vector<CSVRecord> &records, const vector<string> &headers, const string &dimension)
+void rollup()
 {
-  int colIndex = findColumnIndex(headers, dimension);
-  if (colIndex == -1)
+  cout << "Available dimensions: ";
+  for (auto &h : headers)
+    cout << h << " ";
+  cout << "\nEnter dimension: ";
+
+  string dimension;
+  cin >> dimension;
+
+  int col = findColumn(dimension);
+  if (col == -1)
   {
-    cerr << "Error: Dimension '" << dimension << "' not found!" << endl;
+    cout << "Column not found!\n";
     return;
   }
 
   map<string, int> counts;
-  for (const auto &record : records)
-  {
-    counts[record.fields[colIndex]]++;
-  }
+  for (auto &row : dataset)
+    counts[row[col]]++;
 
-  cout << "Roll-up by " << dimension << ":" << endl;
-  for (const auto &pair : counts)
+  cout << "\nRoll-up by " << dimension << ":\n";
+  for (auto &pair : counts)
+    cout << "  " << pair.first << ": " << pair.second << " records\n";
+
+  vector<vector<string>> rollupResult;
+  for (auto &pair : counts)
   {
-    cout << pair.first << ": " << pair.second << " records" << endl;
+    vector<string> resultRow = {pair.first, to_string(pair.second)};
+    rollupResult.push_back(resultRow);
   }
+  
+  ofstream file("rollup_output.csv");
+  file << dimension << ",Count\n";
+  for (auto &row : rollupResult)
+  {
+    file << row[0] << "," << row[1] << "\n";
+  }
+  file.close();
+  cout << "Rollup saved to rollup_output.csv\n";
 }
 
-// Slice operation - filter records by dimension value
-void slice(const vector<CSVRecord> &records, const vector<string> &headers,
-           const string &dimension, const string &value)
+void slice()
 {
-  int colIndex = findColumnIndex(headers, dimension);
-  if (colIndex == -1)
+  cout << "Available dimensions: ";
+  for (auto &h : headers)
+    cout << h << " ";
+  cout << "\nEnter dimension: ";
+
+  string dimension, value;
+  cin >> dimension;
+  cout << "Enter value: ";
+  cin >> value;
+
+  int col = findColumn(dimension);
+  if (col == -1)
   {
-    cerr << "Error: Dimension '" << dimension << "' not found!" << endl;
+    cout << "Column not found!\n";
     return;
   }
 
-  string lowerValue = toLower(value);
-  cout << "Slice on " << dimension << " = " << value << ":" << endl;
-  bool found = false;
-
-  for (const auto &record : records)
+  vector<vector<string>> result;
+  for (auto &row : dataset)
   {
-    if (toLower(record.fields[colIndex]) == lowerValue)
-    {
-      found = true;
-      for (size_t i = 0; i < record.fields.size(); i++)
-      {
-        cout << (i > 0 ? ", " : "") << headers[i] << ": " << record.fields[i];
-      }
-      cout << endl;
-    }
+    if (row[col] == value)
+      result.push_back(row);
   }
 
-  if (!found)
-  {
-    cout << "No records found for " << dimension << " = " << value << endl;
-  }
+  saveCSV("slice_output.csv", result);
+  cout << "Found " << result.size() << " records\n";
+  cout << "Slice saved to slice_output.csv\n";
 }
 
-// Dice operation - filter records by multiple criteria
-void dice(const vector<CSVRecord> &records, const vector<string> &headers,
-          const string &dim1, const string &val1,
-          const string &dim2, const string &val2)
+void dice()
 {
-  int colIndex1 = findColumnIndex(headers, dim1);
-  int colIndex2 = findColumnIndex(headers, dim2);
+  cout << "Available dimensions: ";
+  for (auto &h : headers)
+    cout << h << " ";
+  cout << "\nEnter first dimension: ";
 
-  if (colIndex1 == -1 || colIndex2 == -1)
+  string dim1, val1, dim2, val2;
+  cin >> dim1;
+  cout << "Enter first value: ";
+  cin >> val1;
+  cout << "Enter second dimension: ";
+  cin >> dim2;
+  cout << "Enter second value: ";
+  cin >> val2;
+
+  int col1 = findColumn(dim1);
+  int col2 = findColumn(dim2);
+  if (col1 == -1 || col2 == -1)
   {
-    cerr << "Error: One or more dimensions not found!" << endl;
+    cout << "Column not found!\n";
     return;
   }
 
-  string lowerVal1 = toLower(val1);
-  string lowerVal2 = toLower(val2);
-  cout << "Dice on " << dim1 << " = " << val1 << " and " << dim2 << " = " << val2 << ":" << endl;
-  bool found = false;
-
-  for (const auto &record : records)
+  vector<vector<string>> result;
+  for (auto &row : dataset)
   {
-    if (toLower(record.fields[colIndex1]) == lowerVal1 &&
-        toLower(record.fields[colIndex2]) == lowerVal2)
-    {
-      found = true;
-      for (size_t i = 0; i < record.fields.size(); i++)
-      {
-        cout << (i > 0 ? ", " : "") << headers[i] << ": " << record.fields[i];
-      }
-      cout << endl;
-    }
+    if (row[col1] == val1 && row[col2] == val2)
+      result.push_back(row);
   }
 
-  if (!found)
-  {
-    cout << "No records found for the specified criteria" << endl;
-  }
+  saveCSV("dice_output.csv", result);
+  cout << "Found " << result.size() << " records\n";
+  cout << "Dice saved to dice_output.csv\n";
 }
 
-// Parse command line input
-vector<string> parseCommand(const string &command)
+void cube()
 {
-  vector<string> tokens;
-  string token;
-  bool inQuotes = false;
-
-  for (char c : command)
+  cout << "CUBE Operation - Multi-dimensional aggregation\n";
+  cout << "This will create aggregations for all combinations of dimensions\n\n";
+  
+  cout << "Available categorical dimensions: ";
+  for (auto &h : headers)
+    cout << h << " ";
+  cout << "\nEnter first dimension: ";
+  
+  string dim1, dim2;
+  cin >> dim1;
+  cout << "Enter second dimension: ";
+  cin >> dim2;
+  
+  int col1 = findColumn(dim1);
+  int col2 = findColumn(dim2);
+  if (col1 == -1 || col2 == -1)
   {
-    if (c == '"')
+    cout << "Dimensions not found!\n";
+    return;
+  }
+  
+  map<string, map<string, int>> cubeData;
+  map<string, int> dim1Totals;
+  map<string, int> dim2Totals;
+  int grandTotal = 0;
+  
+  for (auto &row : dataset)
+  {
+    cubeData[row[col1]][row[col2]]++;
+    dim1Totals[row[col1]]++;
+    dim2Totals[row[col2]]++;
+    grandTotal++;
+  }
+  
+  ofstream cubeFile("cube_output.csv");
+  cubeFile << "Dimension1,Dimension2,Count,Type\n";
+  
+  cubeFile << "ALL,ALL," << grandTotal << ",Grand Total\n";
+  
+  for (auto &d1 : dim1Totals)
+  {
+    cubeFile << d1.first << ",ALL," << d1.second << "," << dim1 << " Subtotal\n";
+  }
+  
+  for (auto &d2 : dim2Totals)
+  {
+    cubeFile << "ALL," << d2.first << "," << d2.second << "," << dim2 << " Subtotal\n";
+  }
+  
+  for (auto &d1 : cubeData)
+  {
+    for (auto &d2 : d1.second)
     {
-      inQuotes = !inQuotes;
-    }
-    else if (c == ' ' && !inQuotes)
-    {
-      if (!token.empty())
-      {
-        tokens.push_back(token);
-        token.clear();
-      }
-    }
-    else
-    {
-      token += c;
+      cubeFile << d1.first << "," << d2.first << "," << d2.second << ",Detail\n";
     }
   }
-
-  if (!token.empty())
-  {
-    tokens.push_back(token);
-  }
-
-  return tokens;
+  
+  cubeFile.close();
+  
+  cout << "\nCUBE Results:\n";
+  cout << "Grand Total: " << grandTotal << " records\n";
+  cout << dim1 << " has " << dim1Totals.size() << " categories\n";
+  cout << dim2 << " has " << dim2Totals.size() << " categories\n";
+  cout << "CUBE operation completed\n";
+  cout << "Results saved to cube_output.csv\n";
 }
 
-// Display available commands
-void showHelp()
+void drilldown()
 {
-  cout << "\nAvailable commands:" << endl;
-  cout << "  rollup <dimension>      - Count records by dimension" << endl;
-  cout << "  slice <dim> <value>     - Filter records by dimension value" << endl;
-  cout << "  dice <dim1> <val1> <dim2> <val2> - Filter by multiple criteria" << endl;
-  cout << "  help                    - Show this help message" << endl;
-  cout << "  exit                    - Exit the program" << endl;
+  cout << "Available dimensions: ";
+  for (auto &h : headers)
+    cout << h << " ";
+  cout << "\nEnter dimension to drill down: ";
+
+  string dimension, value;
+  cin >> dimension;
+  cout << "Enter value to drill down into: ";
+  cin >> value;
+
+  int col = findColumn(dimension);
+  if (col == -1)
+  {
+    cout << "Column not found!\n";
+    return;
+  }
+
+  vector<vector<string>> drilldownResult;
+  for (auto &row : dataset)
+  {
+    if (row[col] == value)
+      drilldownResult.push_back(row);
+  }
+
+  cout << "Drill-down into " << dimension << " = " << value << ":\n";
+  cout << "Found " << drilldownResult.size() << " detailed records\n";
+
+  saveCSV("drilldown_output.csv", drilldownResult);
+  cout << "Drilldown saved to drilldown_output.csv\n";
+}
+
+void pivot()
+{
+  cout << "Available columns: ";
+  for (auto &h : headers)
+    cout << h << " ";
+  cout << "\nEnter row dimension: ";
+
+  string rowDim, colDim, measure;
+  cin >> rowDim;
+  cout << "Enter column dimension: ";
+  cin >> colDim;
+  cout << "Enter measure: ";
+  cin >> measure;
+
+  int rowCol = findColumn(rowDim);
+  int colCol = findColumn(colDim);
+  int measureCol = findColumn(measure);
+
+  if (rowCol == -1 || colCol == -1 || measureCol == -1)
+  {
+    cout << "Columns not found!\n";
+    return;
+  }
+
+  map<string, map<string, double>> pivotTable;
+  map<string, double> rowTotals;
+  map<string, double> colTotals;
+  double grandTotal = 0;
+
+  for (auto &row : dataset)
+  {
+    string rowVal = row[rowCol];
+    string colVal = row[colCol];
+    double measureVal = stod(row[measureCol]);
+
+    pivotTable[rowVal][colVal] += measureVal;
+    rowTotals[rowVal] += measureVal;
+    colTotals[colVal] += measureVal;
+    grandTotal += measureVal;
+  }
+
+  vector<vector<string>> pivotResult;
+  vector<string> headerRow = {rowDim + "\\" + colDim};
+  for (auto &col : colTotals)
+    headerRow.push_back(col.first);
+  headerRow.push_back("Total");
+  pivotResult.push_back(headerRow);
+
+  for (auto &row : pivotTable)
+  {
+    vector<string> pivotRow = {row.first};
+    for (auto &col : colTotals)
+    {
+      pivotRow.push_back(to_string(row.second[col.first]));
+    }
+    pivotRow.push_back(to_string(rowTotals[row.first]));
+    pivotResult.push_back(pivotRow);
+  }
+
+  vector<string> totalRow = {"Total"};
+  for (auto &col : colTotals)
+    totalRow.push_back(to_string(col.second));
+  totalRow.push_back(to_string(grandTotal));
+  pivotResult.push_back(totalRow);
+
+  saveCSV("pivot_output.csv", pivotResult);
+  cout << "Pivot table saved to pivot_output.csv\n";
 }
 
 int main(int argc, char *argv[])
 {
-  if (argc != 2)
+  if (argc < 2)
   {
-    cerr << "Usage: " << argv[0] << " <csv_file>" << endl;
+    cout << "Usage: " << argv[0] << " <input.csv>\n";
     return 1;
   }
 
-  vector<string> headers;
-  vector<CSVRecord> records = loadCSV(argv[1], headers);
+  loadCSV(argv[1]);
+  cout << "Loaded " << dataset.size() << " records with " << headers.size() << " columns\n\n";
 
-  if (records.empty())
-  {
-    cerr << "Error: No data loaded or file not found." << endl;
-    return 1;
-  }
-
-  cout << "Loaded " << records.size() << " records with " << headers.size() << " columns." << endl;
-  showHelp();
-
-  string command;
   while (true)
   {
-    cout << "\nEnter command: ";
-    getline(cin, command);
+    cout << "OLAP Operations:\n";
+    cout << "1. Roll-up (Aggregate by dimension)\n";
+    cout << "2. Drill-down (Detailed view of specific value)\n";
+    cout << "3. Slice (Filter by value)\n";
+    cout << "4. Dice (Filter by multiple values)\n";
+    cout << "5. CUBE (Multi-dimensional aggregation)\n";
+    cout << "6. Pivot (Cross-tabulation)\n";
+    cout << "7. Exit\n";
+    cout << "Choose operation (1-7): ";
 
-    vector<string> tokens = parseCommand(command);
-    if (tokens.empty())
-      continue;
+    string choice;
+    cin >> choice;
+    cout << "\n";
 
-    string operation = toLower(tokens[0]);
-
-    if (operation == "exit")
-    {
+    if (choice == "1")
+      rollup();
+    else if (choice == "2")
+      drilldown();
+    else if (choice == "3")
+      slice();
+    else if (choice == "4")
+      dice();
+    else if (choice == "5")
+      cube();
+    else if (choice == "6")
+      pivot();
+    else if (choice == "7")
       break;
-    }
-    else if (operation == "help")
-    {
-      showHelp();
-    }
-    else if (operation == "rollup" && tokens.size() >= 2)
-    {
-      rollup(records, headers, tokens[1]);
-    }
-    else if (operation == "slice" && tokens.size() >= 3)
-    {
-      slice(records, headers, tokens[1], tokens[2]);
-    }
-    else if (operation == "dice" && tokens.size() >= 5)
-    {
-      dice(records, headers, tokens[1], tokens[2], tokens[3], tokens[4]);
-    }
     else
-    {
-      cerr << "Error: Invalid command or insufficient parameters." << endl;
-      showHelp();
-    }
+      cout << "Invalid choice! Please enter 1-7\n";
+
+    cout << "\n";
   }
 
   return 0;

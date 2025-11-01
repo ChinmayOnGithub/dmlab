@@ -1,6 +1,6 @@
-Value,Cluster
-19,1
-21,1
-20,1
-23,1
-31,0
+Point,Cluster,Type
+P0,1,Core
+P1,1,Core
+P2,1,Core
+P3,1,Border
+P4,Noise,Noise

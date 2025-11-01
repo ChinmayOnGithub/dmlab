@@ -1,4 +1,4 @@
-Country\Department,Groceries,,,clothes,,,Gadgets,,,Total,,
+Customer\Product,Groceries,,,clothes,,,Gadgets,,,Total,,
 ,Count,t-weight,d-weight,Count,t-weight,d-weight,Count,t-weight,d-weight,Count,t-weight,d-weight
 Regular,40,50.00%,66.67%,30.00,37.50%,54.55%,10.00,12.50%,22.22%,80.00,100.00%,50.00%
 Premium,20.00,25.00%,33.33%,25.00,31.25%,45.45%,35.00,43.75%,77.78%,80.00,100.00%,50.00%

@@ -16,16 +16,54 @@ int main(int argc, char *argv[])
   ifstream file(argv[1]);
   string line;
   vector<double> X, Y;
+  vector<string> headers;
 
-  getline(file, line);
+  if (getline(file, line))
+  {
+    stringstream ss(line);
+    string header;
+    while (getline(ss, header, ','))
+    {
+      headers.push_back(header);
+    }
+  }
+
+  if (headers.size() < 2)
+  {
+    cerr << "Error: Expected at least 2 columns for linear regression" << endl;
+    return 1;
+  }
+
+  int xCol = 0, yCol = 1;
+  
+  cout << "Linear Regression Analysis:" << endl;
+  cout << "Using standard format:" << endl;
+  cout << "  X (Independent Variable): " << headers[xCol] << " (column " << xCol << ")" << endl;
+  cout << "  Y (Dependent Variable): " << headers[yCol] << " (column " << yCol << ")" << endl;
+  cout << endl;
+
   while (getline(file, line))
   {
     stringstream ss(line);
-    string x_val, y_val;
-    getline(ss, x_val, ',');
-    getline(ss, y_val, ',');
-    X.push_back(stod(x_val));
-    Y.push_back(stod(y_val));
+    vector<string> row;
+    string cell;
+    while (getline(ss, cell, ','))
+    {
+      row.push_back(cell);
+    }
+    
+    if (row.size() > max(xCol, yCol))
+    {
+      try
+      {
+        X.push_back(stod(row[xCol]));
+        Y.push_back(stod(row[yCol]));
+      }
+      catch (...)
+      {
+        cerr << "Warning: Invalid numeric data in row, skipping..." << endl;
+      }
+    }
   }
   file.close();
 
@@ -43,17 +81,18 @@ int main(int argc, char *argv[])
   double slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
   double intercept = (sumY - slope * sumX) / n;
 
-  cout << "Equation: Y = " << slope << " * X + " << intercept << "\n";
+  cout << "Linear Regression Equation:\n";
+  cout << headers[yCol] << " = " << slope << " * " << headers[xCol] << " + " << intercept << "\n";
 
   double x_val;
-  cout << "Enter X value to predict Y: ";
+  cout << "Enter " << headers[xCol] << " value to predict " << headers[yCol] << ": ";
   cin >> x_val;
 
   double y_pred = slope * x_val + intercept;
-  cout << "Predicted Y = " << y_pred << "\n";
+  cout << "Predicted " << headers[yCol] << " = " << y_pred << "\n";
 
   ofstream fout("output.csv");
-  fout << "X,Y,Predicted_Y\n";
+  fout << headers[xCol] << "," << headers[yCol] << ",Predicted_" << headers[yCol] << "\n";
   for (int i = 0; i < n; i++)
   {
     fout << X[i] << "," << Y[i] << "," << (slope * X[i] + intercept) << "\n";

@@ -5,3 +5,4 @@
 5. code should be dynamic and not hardcoded at all
 6. if we have to perform operation on single column ask which column to select please
 7. dont write any comments
+8. When any C++ program execute .. it should atleast show something about where the output is stored or not. (Atleast something is necesary as verbose on the terminal)

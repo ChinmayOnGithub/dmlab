@@ -70,9 +70,16 @@ int main(int argc, char *argv[])
   }
 
   vector<vector<string>> data;
+  vector<string> headers;
   string line;
 
-  getline(inputFile, line);
+  if (getline(inputFile, line))
+  {
+    stringstream ss(line);
+    string header;
+    while (getline(ss, header, ','))
+      headers.push_back(trim(header));
+  }
 
   while (getline(inputFile, line))
   {
@@ -87,6 +94,21 @@ int main(int argc, char *argv[])
   }
   inputFile.close();
 
+  if (headers.size() < 3)
+  {
+    cerr << "Error: Expected at least 3 columns (row dimension, column dimension, measure)" << endl;
+    return 1;
+  }
+
+  int rowDim = 0, colDim = 1, measureCol = 2;
+  
+  cout << "T-Weight D-Weight Analysis:" << endl;
+  cout << "Using standard format:" << endl;
+  cout << "  Row Dimension: " << headers[rowDim] << " (column " << rowDim << ")" << endl;
+  cout << "  Column Dimension: " << headers[colDim] << " (column " << colDim << ")" << endl;
+  cout << "  Measure: " << headers[measureCol] << " (column " << measureCol << ")" << endl;
+  cout << endl;
+
   map<string, map<string, double>> pivotTable;
   map<string, double> rowTotals;
   map<string, double> colTotals;
@@ -95,15 +117,15 @@ int main(int argc, char *argv[])
   vector<string> rowNames, colNames;
   for (const auto &row : data)
   {
-    string rowName = row[0];
-    string colName = row[1];
+    string rowName = row[rowDim];
+    string colName = row[colDim];
 
     if (find(rowNames.begin(), rowNames.end(), rowName) == rowNames.end())
       rowNames.push_back(rowName);
     if (find(colNames.begin(), colNames.end(), colName) == colNames.end())
       colNames.push_back(colName);
 
-    double value = isNumeric(row[2]) ? toDouble(row[2]) : 0.0;
+    double value = isNumeric(row[measureCol]) ? toDouble(row[measureCol]) : 0.0;
     pivotTable[rowName][colName] = value;
     rowTotals[rowName] += value;
     colTotals[colName] += value;
@@ -117,7 +139,7 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  outputFile << "Country\\Department,";
+  outputFile << headers[rowDim] << "\\" << headers[colDim] << ",";
   for (const auto &col : colNames)
     outputFile << col << ",,,";
   outputFile << "Total,," << endl;

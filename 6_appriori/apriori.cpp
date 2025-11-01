@@ -175,12 +175,25 @@ void write_results(const vector<pair<vector<string>, int>> &all_frequent,
                    int num_transactions, const string &input_file)
 {
     string output_file = input_file;
+    size_t last_slash = output_file.find_last_of("/\\");
     size_t last_dot = output_file.find_last_of(".");
-    if (last_dot != string::npos)
+    
+    string base_name;
+    if (last_slash != string::npos)
     {
-        output_file = output_file.substr(0, last_dot);
+        base_name = output_file.substr(last_slash + 1);
     }
-    output_file += "_frequent_itemsets.csv";
+    else
+    {
+        base_name = output_file;
+    }
+    
+    if (last_dot != string::npos && last_dot > last_slash)
+    {
+        base_name = base_name.substr(0, last_dot - (last_slash != string::npos ? last_slash + 1 : 0));
+    }
+    
+    output_file = base_name + "_frequent_itemsets.csv";
 
     ofstream output(output_file);
     if (!output.is_open())

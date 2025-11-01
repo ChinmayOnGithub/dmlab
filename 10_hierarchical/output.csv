@@ -1,5 +1,5 @@
 Step,Cluster1,Cluster2,Distance
 1,a,b,3
 2,c,d,3
-3,e,(c+d),15
-4,(a+b),((c+d)+e),25
+3,e,(c+d),16.5
+4,(a+b),((c+d)+e),37.5

@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 
 vector<vector<string>> dataset;
@@ -47,6 +48,19 @@ double getPrior(const string &targetClass, int targetCol)
   return (double)count / dataset.size();
 }
 
+bool isNumeric(const string &str)
+{
+  try
+  {
+    stod(str);
+    return true;
+  }
+  catch (...)
+  {
+    return false;
+  }
+}
+
 double getConditional(const string &attr, const string &val, const string &targetClass, int attrCol, int targetCol)
 {
   int total = 0, count = 0;
@@ -67,6 +81,46 @@ double getConditional(const string &attr, const string &val, const string &targe
   }
 
   return (double)count / total;
+}
+
+double getGaussianProbability(double value, const string &targetClass, int attrCol, int targetCol)
+{
+  vector<double> values;
+  
+  for (auto &row : dataset)
+  {
+    if (row[targetCol] == targetClass)
+    {
+      try
+      {
+        values.push_back(stod(row[attrCol]));
+      }
+      catch (...)
+      {
+        continue;
+      }
+    }
+  }
+  
+  if (values.empty())
+    return 0;
+  
+  double mean = 0;
+  for (double v : values)
+    mean += v;
+  mean /= values.size();
+  
+  double variance = 0;
+  for (double v : values)
+    variance += (v - mean) * (v - mean);
+  variance /= values.size();
+  
+  if (variance == 0)
+    return (value == mean) ? 1.0 : 0.0;
+  
+  double stddev = sqrt(variance);
+  double exponent = -((value - mean) * (value - mean)) / (2 * variance);
+  return (1.0 / (stddev * sqrt(2 * M_PI))) * exp(exponent);
 }
 
 int main(int argc, char *argv[])
@@ -115,9 +169,34 @@ int main(int argc, char *argv[])
   }
 
   map<string, string> testData;
+  map<string, bool> isNumericFeature;
+  
   for (auto &feature : featureCols)
   {
-    cout << "Enter value for " << feature << ": ";
+    int featureCol = -1;
+    for (int i = 0; i < headers.size(); i++)
+    {
+      if (headers[i] == feature)
+        featureCol = i;
+    }
+    
+    bool numeric = true;
+    for (int i = 0; i < min(5, (int)dataset.size()); i++)
+    {
+      if (!isNumeric(dataset[i][featureCol]))
+      {
+        numeric = false;
+        break;
+      }
+    }
+    isNumericFeature[feature] = numeric;
+    
+    cout << "Enter value for " << feature;
+    if (numeric)
+      cout << " (numeric)";
+    else
+      cout << " (categorical)";
+    cout << ": ";
     cin >> input;
     testData[feature] = input;
   }
@@ -147,7 +226,16 @@ int main(int argc, char *argv[])
         if (headers[i] == feature)
           attrCol = i;
       }
-      probability *= getConditional(feature, testData[feature], className, attrCol, targetCol);
+      
+      if (isNumericFeature[feature])
+      {
+        double value = stod(testData[feature]);
+        probability *= getGaussianProbability(value, className, attrCol, targetCol);
+      }
+      else
+      {
+        probability *= getConditional(feature, testData[feature], className, attrCol, targetCol);
+      }
     }
 
     classProbabilities[className] = probability;

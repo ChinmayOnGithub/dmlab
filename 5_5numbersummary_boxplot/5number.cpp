@@ -1,4 +1,11 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <map>
+#include <cmath>
 using namespace std;
 
 double median_of_range(const vector<double> &v, size_t lo, size_t hi)
@@ -123,10 +130,12 @@ int main(int argc, char *argv[])
       filtered.push_back(x);
 
   sort(filtered.begin(), filtered.end());
+  double whisker_min = minv;
+  double whisker_max = maxv;
   if (!filtered.empty())
   {
-    minv = filtered.front();
-    maxv = filtered.back();
+    whisker_min = filtered.front();
+    whisker_max = filtered.back();
   }
 
   cout << "\nFive-Number Summary:\n";
@@ -137,7 +146,11 @@ int main(int argc, char *argv[])
   cout << " Max: " << maxv << "\n";
   cout << " IQR: " << iqr << "\n";
 
-  cout << " Outliers: ";
+  cout << "\nBox Plot Whiskers:\n";
+  cout << " Lower Whisker: " << whisker_min << "\n";
+  cout << " Upper Whisker: " << whisker_max << "\n";
+
+  cout << "\n Outliers: ";
   if (outliers.empty())
     cout << "None\n";
   else
@@ -155,6 +168,8 @@ int main(int argc, char *argv[])
   fout << "Q3," << q3 << "\n";
   fout << "Max," << maxv << "\n";
   fout << "IQR," << iqr << "\n";
+  fout << "Lower_Whisker," << whisker_min << "\n";
+  fout << "Upper_Whisker," << whisker_max << "\n";
   if (!outliers.empty())
   {
     fout << "Outliers,";

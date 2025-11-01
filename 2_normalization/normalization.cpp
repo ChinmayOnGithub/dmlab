@@ -21,7 +21,12 @@ double calculateStdDev(const vector<double> &values, double mean)
   double variance_sum = 0.0;
   for (double v : values)
     variance_sum += (v - mean) * (v - mean);
-  return sqrt(variance_sum / values.size());
+  // return sqrt(variance_sum / values.size());
+  if (values.size() < 2)
+  {
+    return 0.0;
+  }
+  return sqrt(variance_sum / (values.size() - 1));
 }
 
 vector<double> minMaxNormalize(const vector<double> &data, double new_min, double new_max)
