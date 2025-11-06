@@ -1,0 +1,25 @@
+Itemset,Support_Count,Support_Percentage
+bottled water,3,11.1111
+butter,3,11.1111
+chocolate,3,11.1111
+citrus fruit,2,7.40741
+cream cheese,2,7.40741
+flour,2,7.40741
+fruit/vegetable juice,2,7.40741
+newspapers,2,7.40741
+other vegetables,5,18.5185
+rolls/buns,5,18.5185
+soda,2,7.40741
+tropical fruit,6,22.2222
+whole milk,6,22.2222
+yogurt,5,18.5185
+bottled water+tropical fruit,2,7.40741
+butter+whole milk,2,7.40741
+butter+yogurt,2,7.40741
+flour+tropical fruit,2,7.40741
+other vegetables+rolls/buns,2,7.40741
+other vegetables+tropical fruit,2,7.40741
+rolls/buns+soda,2,7.40741
+tropical fruit+yogurt,2,7.40741
+whole milk+yogurt,2,7.40741
+butter+whole milk+yogurt,2,7.40741

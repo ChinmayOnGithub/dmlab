@@ -1,0 +1,16 @@
+Cust, accno, bankname, location, deposit
+male,0101,sbi,pune,yes 
+female,0102,hdfc,mumbai,no 
+male,0103,icici,nagpur,yes 
+male,0104,boi,nashik,yes 
+female,0105,sbi,mumbai,no 
+male,0106,boi,pune,yes 
+female,0107,rbi,mumbai,yes 
+female,0108,hdfc,sangli,no 
+male,0109,icici,sangli,yes 
+male,0110,boi,mumbai,no 
+female,0111,rbi,sangli,yes 
+male,0112,sbi,mumbai,yes 
+female,0113,rbi,nagpur,no 
+male,0114,hdfc,nashik,yes 
+female,0115,icici,nashik,no 

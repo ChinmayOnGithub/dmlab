@@ -1,0 +1,7 @@
+ID, Name, Course1, Course2, Course3, Course4, Course5, Course6, Total, Result
+1, PAVAN, 60, 65, 55, 50, 50, 54, 334, PASS
+2, VISHAL, 70, 54, 46, 48, 58, 56, 332, PASS
+3, RAJESH, 60, 55, 40, 50, 40, 76, 321, PASS
+4, KIRAN, 60, 55, 30, 50, 40, 55, 290, FAIL
+5, SURESH, 60, 55, 45, 60, 40, 66, 326, PASS
+6, MANISH, 60, 55, 65, 50, 20, 37, 287, FAIL

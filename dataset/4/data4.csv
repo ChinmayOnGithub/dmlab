@@ -1,0 +1,6 @@
+name, id, salary, exp, gender, phone
+x, 101, low, 10000, 2, male, 250311 
+y, 102, 55000, high, 3, female, 251665 
+z, 103, 32000, medium, 1, male, 240238 
+a, 104, 12000, low, 5, female, 200200 
+b, 105, 51500, high, 2, male, 240240 

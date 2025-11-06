@@ -1,0 +1,50 @@
+QUESTION 3: NAIVE BAYES CLASSIFICATION
+======================================
+
+DIFFICULTY: ⭐⭐⭐ HARD
+
+PROBLEM STATEMENT:
+Implement Naive Bayes classifier to predict whether a person will play tennis based on weather conditions.
+
+REQUIREMENTS:
+1. Read the tennis dataset
+2. Calculate prior probabilities P(Play=Yes) and P(Play=No)
+3. Calculate conditional probabilities for each attribute:
+   - P(Outlook|Play), P(Temperature|Play), P(Humidity|Play), P(Wind|Play)
+4. For a given test case, calculate posterior probabilities using Bayes theorem
+5. Classify the test case based on higher probability
+6. Display all probability calculations in table format
+7. Save results to output.csv
+
+TEST CASE: (Sunny, Hot, High, False)
+
+EXPECTED OUTPUT FORMAT:
+======================
+Training Data Analysis:
+Total records: 14
+Play=Yes: 9 records (64.3%)
+Play=No: 5 records (35.7%)
+
+Conditional Probabilities:
+=========================
+P(Outlook=Sunny|Play=Yes) = 2/9 = 0.222
+P(Outlook=Sunny|Play=No) = 3/5 = 0.600
+P(Temperature=Hot|Play=Yes) = 2/9 = 0.222
+P(Temperature=Hot|Play=No) = 2/5 = 0.400
+...
+
+Test Case: (Sunny, Hot, High, False)
+===================================
+P(Play=Yes|X) = P(Sunny|Yes) × P(Hot|Yes) × P(High|Yes) × P(False|Yes) × P(Yes)
+              = 0.222 × 0.222 × 0.333 × 0.667 × 0.643
+              = 0.007
+
+P(Play=No|X) = P(Sunny|No) × P(Hot|No) × P(High|No) × P(False|No) × P(No)
+             = 0.600 × 0.400 × 0.800 × 0.333 × 0.357
+             = 0.023
+
+Prediction: No (Higher probability)
+
+DATASET: tennis.csv
+COMPILE: g++ -o q3 question3.cpp  
+RUN: ./q3 tennis.csv

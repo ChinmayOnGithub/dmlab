@@ -1,0 +1,68 @@
+QUESTION 4: DATA NORMALIZATION
+==============================
+
+DIFFICULTY: ⭐ EASY
+
+PROBLEM STATEMENT:
+You are given a dataset with student scores. Apply both Min-Max normalization and Z-score standardization to the selected numeric columns and compare the results.
+
+REQUIREMENTS:
+1. Read the CSV file
+2. Show available columns to user
+3. Let user select numeric columns to normalize
+4. Apply Min-Max normalization: (x - min) / (max - min)
+5. Apply Z-score standardization: (x - mean) / std_dev
+6. Display original vs normalized vs standardized values
+7. Save results to output.csv with all three versions
+
+EXPECTED OUTPUT FORMAT:
+======================
+Available columns:
+0: Name
+1: Math
+2: Science
+3: English
+
+Enter number of columns to normalize: 2
+Enter column 1 index: 1
+Enter column 2 index: 2
+
+Original Data (first 5 rows):
+Name        Math    Science
+Alice       85      92
+Bob         78      88
+Charlie     92      95
+Diana       67      82
+Eve         89      90
+
+Min-Max Normalization Results:
+==============================
+Math: Min=67, Max=92, Range=25
+Science: Min=82, Max=95, Range=13
+
+Normalized Data (first 5 rows):
+Name        Math_norm   Science_norm
+Alice       0.72        0.77
+Bob         0.44        0.46
+Charlie     1.00        1.00
+Diana       0.00        0.00
+Eve         0.88        0.62
+
+Z-Score Standardization Results:
+===============================
+Math: Mean=82.2, Std=8.9
+Science: Mean=89.4, Std=4.8
+
+Standardized Data (first 5 rows):
+Name        Math_std    Science_std
+Alice       0.31        0.54
+Bob        -0.47       -0.29
+Charlie     1.10        1.17
+Diana      -1.71       -1.54
+Eve         0.76        0.13
+
+Results saved to output.csv
+
+DATASET: scores.csv
+COMPILE: g++ -o q4 question4.cpp
+RUN: ./q4 scores.csv

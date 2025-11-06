@@ -1,0 +1,11 @@
+Temperature, humidity, outlook, windy, play
+65.0, 60.0, rainy, true, no
+64.4, 75.7, overcast, false, yes
+82.0, 86.8, sunny, true, no
+94.0, 75.0, sunny, false, yes
+67.4, 60.7, overcast, true, no
+73.6, 66.8, sunny, false, yes
+50.5, 86.7, rainy, true, no
+68.0, 0.6, rainy, false, yes
+79.0, 64.5, sunny, false, yes
+65.0, 96.0, rainy, false, yes

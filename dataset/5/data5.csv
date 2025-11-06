@@ -1,0 +1,16 @@
+Age, income, studying, creditrate, buysPC 
+15-20,high,no,fair,yes 
+20-40,low,yes,fair,yes 
+40-55,medium,yes,fair,yes 
+15-20,low,no,fair,no 
+40-55,high,no,excellent,yes 
+15-20,low,yes,fair,yes 
+20-40,high,yes,excellent,no 
+40-55,low,no,fair,yes 
+15-20,high,yes,excellent,yes 
+40-55,high,no,fair,yes 
+15-20,low,yes,excellent,no 
+40-55,high,yes,excellent,no 
+20-40,medium,yes,excellent,yes 
+15-20,medium,yes,fair,yes 
+40-55,high,yes,excellent,yes 

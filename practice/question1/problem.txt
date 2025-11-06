@@ -1,0 +1,44 @@
+QUESTION 1: BASIC STATISTICS AND CORRELATION
+==========================================
+
+DIFFICULTY: ⭐ EASY
+
+PROBLEM STATEMENT:
+You are given a dataset with student information. Calculate the correlation coefficient between two numeric attributes and determine if there's a strong, moderate, or weak correlation.
+
+REQUIREMENTS:
+1. Read the CSV file
+2. Show available columns to user
+3. Let user select 2 numeric columns
+4. Calculate correlation coefficient using the formula:
+   r = Σ(xi-x̄)(yi-ȳ) / √[Σ(xi-x̄)²Σ(yi-ȳ)²]
+5. Display the correlation value
+6. Interpret the result:
+   - |r| > 0.7: Strong correlation
+   - 0.3 < |r| ≤ 0.7: Moderate correlation  
+   - |r| ≤ 0.3: Weak correlation
+7. Save results to output.csv
+
+EXPECTED OUTPUT FORMAT:
+========================
+Available columns:
+0: Name
+1: Age  
+2: Height
+3: Weight
+
+Enter first column index: 2
+Enter second column index: 3
+
+Correlation Analysis:
+====================
+Attribute 1: Height
+Attribute 2: Weight
+Correlation coefficient: 0.85
+Interpretation: Strong positive correlation
+
+Results saved to output.csv
+
+DATASET: students.csv
+COMPILE: g++ -o q1 question1.cpp
+RUN: ./q1 students.csv
