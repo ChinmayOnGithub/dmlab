@@ -1,0 +1,252 @@
+DATASET 7 - FEATURE SELECTION AND CLASSIFICATION
+================================================
+
+ALGORITHMS IMPLEMENTED:
+1. Naive Bayes Classification
+2. Information Gain (Feature Selection)
+
+DATASET DESCRIPTION:
+- Multi-attribute dataset requiring feature selection
+- Binary or multi-class classification problem
+- Demonstrates importance of feature engineering
+
+INFORMATION GAIN
+===============
+
+DEFINITION:
+Information Gain measures the reduction in entropy (uncertainty) achieved by partitioning data based on a feature. It quantifies how much information a feature provides about the class.
+
+MATHEMATICAL FOUNDATION:
+
+ENTROPY:
+Entropy measures the impurity or uncertainty in a dataset:
+H(S) = -Σᵢ pᵢ × log₂(pᵢ)
+
+Where:
+- S: Dataset
+- pᵢ: Proportion of class i in S
+- H(S): Entropy of dataset S
+
+Properties:
+- H(S) = 0: Pure dataset (all same class)
+- H(S) = 1: Maximum impurity (equal distribution)
+
+INFORMATION GAIN:
+IG(S,A) = H(S) - Σᵥ∈Values(A) (|Sᵥ|/|S|) × H(Sᵥ)
+
+Where:
+- A: Attribute/Feature
+- Values(A): Possible values of attribute A
+- Sᵥ: Subset of S where attribute A has value v
+- |S|: Size of dataset S
+
+INTERPRETATION:
+- Higher IG: Feature provides more information
+- IG = 0: Feature provides no information
+- Used for feature ranking and selection
+
+BINARY SPLIT FOR CONTINUOUS FEATURES:
+====================================
+
+PROBLEM:
+Information Gain works naturally with categorical features, but continuous features need discretization.
+
+SOLUTION - BINARY SPLIT:
+1. Sort continuous feature values
+2. Consider midpoints between consecutive values as split candidates
+3. For each candidate, calculate IG with binary split (≤ threshold, > threshold)
+4. Choose split with maximum IG
+5. Convert continuous feature to binary categorical
+
+ADVANTAGES:
+- Simple and interpretable
+- Preserves ordering information
+- Reduces computational complexity
+- Works well with decision trees
+
+EXAMPLE:
+Age: [25, 27, 28, 30, 35, 48]
+Possible splits: 26, 27.5, 29, 32.5, 41.5
+Best split: 32.5 (maximizes IG)
+Result: Age_low (≤32.5), Age_high (>32.5)
+
+WHY INFORMATION GAIN?
+====================
+
+ADVANTAGES:
+1. Quantitative feature importance measure
+2. Reduces dimensionality
+3. Improves model performance
+4. Reduces overfitting
+5. Faster training and prediction
+6. Better interpretability
+
+APPLICATIONS:
+- Feature selection for classification
+- Decision tree construction
+- Dimensionality reduction
+- Understanding data relationships
+- Feature engineering guidance
+
+FEATURE SELECTION METHODS:
+=========================
+
+FILTER METHODS:
+1. Information Gain: Entropy-based ranking
+2. Chi-Square Test: Statistical independence
+3. Correlation Coefficient: Linear relationships
+4. Mutual Information: General dependency measure
+
+WRAPPER METHODS:
+1. Forward Selection: Add features iteratively
+2. Backward Elimination: Remove features iteratively
+3. Recursive Feature Elimination: Systematic removal
+
+EMBEDDED METHODS:
+1. Lasso Regression: L1 regularization
+2. Ridge Regression: L2 regularization
+3. Decision Trees: Built-in feature importance
+4. Random Forest: Feature importance scores
+
+COMPARISON OF METHODS:
+=====================
+
+INFORMATION GAIN VS CHI-SQUARE:
+- IG: Works with any target type, entropy-based
+- Chi-Square: Statistical test, requires categorical data
+
+INFORMATION GAIN VS CORRELATION:
+- IG: Captures non-linear relationships
+- Correlation: Only linear relationships
+
+INFORMATION GAIN VS MUTUAL INFORMATION:
+- IG: Special case of MI for classification
+- MI: More general, works for any variable types
+
+DECISION TREE CONSTRUCTION:
+==========================
+
+INFORMATION GAIN IN TREES:
+1. Calculate IG for all features
+2. Select feature with highest IG as root
+3. Split data based on feature values
+4. Recursively build subtrees
+5. Stop when pure nodes or max depth reached
+
+ALGORITHMS USING IG:
+- ID3 (Iterative Dichotomiser 3)
+- C4.5 (Improved ID3)
+- CART (uses Gini index instead)
+
+PRACTICAL IMPLEMENTATION:
+========================
+
+PREPROCESSING STEPS:
+1. Handle missing values
+2. Encode categorical variables
+3. Normalize/scale numerical features
+4. Apply binary split to continuous features
+5. Calculate IG for all features
+
+FEATURE SELECTION WORKFLOW:
+1. Calculate IG for each feature
+2. Rank features by IG score
+3. Set threshold or select top-k features
+4. Remove low-IG features
+5. Train model with selected features
+6. Validate performance improvement
+
+EVALUATION:
+- Compare model performance before/after selection
+- Analyze training time reduction
+- Assess interpretability improvement
+- Validate on hold-out test set
+
+COMBINING WITH NAIVE BAYES:
+===========================
+
+SYNERGY:
+1. IG identifies most informative features
+2. Naive Bayes uses selected features for classification
+3. Reduced feature space improves NB performance
+4. Faster training and prediction
+5. Better handling of independence assumption
+
+WORKFLOW:
+1. Calculate IG for all features
+2. Select top features based on IG threshold
+3. Train Naive Bayes with selected features
+4. Evaluate classification performance
+5. Iterate if needed
+
+ADVANTAGES OF COMBINATION:
+- Improved accuracy with fewer features
+- Reduced computational cost
+- Better interpretability
+- Mitigates curse of dimensionality
+- Addresses irrelevant feature problem
+
+ALTERNATIVE FEATURE SELECTION:
+=============================
+
+UNIVARIATE METHODS:
+- ANOVA F-test
+- Pearson correlation
+- Spearman correlation
+- Kendall's tau
+
+MULTIVARIATE METHODS:
+- Principal Component Analysis (PCA)
+- Linear Discriminant Analysis (LDA)
+- Factor Analysis
+- Independent Component Analysis (ICA)
+
+MODEL-BASED METHODS:
+- Feature importance from Random Forest
+- Coefficients from Logistic Regression
+- Weights from Neural Networks
+- SHAP values for any model
+
+PRACTICAL CONSIDERATIONS:
+========================
+
+THRESHOLD SELECTION:
+- Domain knowledge
+- Cross-validation performance
+- Computational constraints
+- Interpretability requirements
+
+HANDLING REDUNDANT FEATURES:
+- Correlation analysis
+- Variance Inflation Factor (VIF)
+- Clustering similar features
+- Domain expertise
+
+CONTINUOUS MONITORING:
+- Feature importance may change over time
+- Regular re-evaluation needed
+- Concept drift detection
+- Adaptive feature selection
+
+BUSINESS APPLICATIONS:
+=====================
+
+CUSTOMER ANALYTICS:
+- Identify key factors for churn
+- Optimize marketing campaigns
+- Personalization strategies
+
+MEDICAL DIAGNOSIS:
+- Select relevant symptoms
+- Reduce diagnostic tests
+- Improve prediction accuracy
+
+FINANCIAL SERVICES:
+- Credit risk assessment
+- Fraud detection features
+- Investment decision factors
+
+MANUFACTURING:
+- Quality control factors
+- Predictive maintenance indicators
+- Process optimization variables

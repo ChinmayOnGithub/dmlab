@@ -35,7 +35,7 @@ bool loadCSV(const string& filename) {
         while (getline(ss, cell, ',')) {
             string cleanCell = trim(cell);
             try { 
-                // Handle categorical salary values
+
                 if (cleanCell == "low") row.push_back(10000);
                 else if (cleanCell == "medium") row.push_back(30000);
                 else if (cleanCell == "high") row.push_back(50000);
@@ -46,9 +46,8 @@ bool loadCSV(const string& filename) {
             catch (...) { row.push_back(0); }
         }
         
-        // Accept rows with at least the expected number of columns
         if (row.size() >= headers.size()) {
-            row.resize(headers.size()); // Trim to exact size
+            row.resize(headers.size());
             data.push_back(row);
         }
     }

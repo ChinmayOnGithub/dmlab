@@ -1,0 +1,89 @@
+DATASET 2 - CLASSIFICATION ANALYSIS
+===================================
+
+ALGORITHM IMPLEMENTED:
+- Naive Bayes Classification
+
+DATASET DESCRIPTION:
+- General classification dataset with categorical and numerical attributes
+- Target variable with binary or multi-class outcomes
+- Suitable for probabilistic classification tasks
+
+NAIVE BAYES CLASSIFICATION
+=========================
+
+DEFINITION:
+Naive Bayes is a probabilistic machine learning algorithm based on Bayes' theorem with the "naive" assumption that all features are conditionally independent given the class label.
+
+MATHEMATICAL FOUNDATION:
+Bayes' Theorem: P(A|B) = P(B|A) * P(A) / P(B)
+
+For classification:
+P(Class|Features) = P(Features|Class) * P(Class) / P(Features)
+
+Where:
+- P(Class|Features): Posterior probability (what we want to find)
+- P(Features|Class): Likelihood (probability of features given class)
+- P(Class): Prior probability (frequency of class in training data)
+- P(Features): Evidence (normalizing constant)
+
+WHY NAIVE BAYES?
+===============
+
+ADVANTAGES:
+1. Simple and fast algorithm
+2. Works well with small datasets
+3. Handles multiple classes naturally
+4. Not sensitive to irrelevant features
+5. Good baseline for text classification
+6. Provides probability estimates
+7. No hyperparameter tuning required
+
+DISADVANTAGES:
+1. Strong independence assumption (rarely true in reality)
+2. Can be outperformed by more sophisticated methods
+3. Requires smoothing for zero probabilities
+4. Categorical inputs require Laplace smoothing
+
+TYPES OF NAIVE BAYES:
+1. Gaussian NB: For continuous features (assumes normal distribution)
+2. Multinomial NB: For discrete counts (text classification)
+3. Bernoulli NB: For binary features
+
+WHEN TO USE NAIVE BAYES:
+- Text classification and spam filtering
+- Medical diagnosis systems
+- Real-time predictions (fast inference)
+- Baseline model for comparison
+- Small training datasets
+- Multi-class classification problems
+
+ALTERNATIVE ALGORITHMS:
+- Logistic Regression: Linear decision boundary
+- Decision Trees: Interpretable rules
+- Random Forest: Ensemble of trees
+- SVM: Maximum margin classifier
+- Neural Networks: Complex pattern recognition
+- K-Nearest Neighbors: Instance-based learning
+
+EVALUATION METRICS:
+- Accuracy: Overall correctness
+- Precision: True positives / (True positives + False positives)
+- Recall: True positives / (True positives + False negatives)
+- F1-Score: Harmonic mean of precision and recall
+- Confusion Matrix: Detailed error analysis
+
+PRACTICAL APPLICATIONS:
+- Email spam detection
+- Sentiment analysis
+- Medical diagnosis
+- Document classification
+- Recommendation systems
+- Fraud detection
+
+IMPLEMENTATION CONSIDERATIONS:
+- Handle missing values appropriately
+- Apply Laplace smoothing for zero probabilities
+- Consider feature scaling for numerical attributes
+- Validate independence assumption
+- Use cross-validation for model evaluation

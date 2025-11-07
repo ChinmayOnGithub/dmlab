@@ -125,7 +125,7 @@ string classify() {
         testCase.push_back(val);
     }
     
-    // Get the actual class names from the data
+
     vector<string> classNames;
     for (auto& pair : classFrequency) {
         classNames.push_back(pair.first);

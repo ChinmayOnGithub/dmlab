@@ -79,7 +79,7 @@ void preprocessData() {
     cout << "\nData Preprocessing:" << endl;
     cout << "Building frequency tables..." << endl;
     
-    // Handle missing values (if any)
+
     int missingCount = 0;
     for (auto& row : data) {
         for (int i = 0; i < row.size(); i++) {
@@ -93,7 +93,7 @@ void preprocessData() {
         cout << "Handled " << missingCount << " missing values" << endl;
     }
     
-    // Build attribute-class frequency table
+
     for (auto& row : data) {
         string classVal = row[targetColumn];
         for (int attr : selectedAttributes) {

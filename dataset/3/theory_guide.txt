@@ -1,0 +1,114 @@
+DATASET 3 - SALARY PREDICTION ANALYSIS
+======================================
+
+ALGORITHM IMPLEMENTED:
+- Linear Regression
+
+DATASET DESCRIPTION:
+- Employee data with Age, Salary, and Performance ratings
+- Numerical and categorical attributes
+- Suitable for regression and prediction tasks
+
+LINEAR REGRESSION
+================
+
+DEFINITION:
+Linear Regression is a statistical method that models the relationship between a dependent variable (target) and one or more independent variables (features) using a linear equation.
+
+MATHEMATICAL FOUNDATION:
+Simple Linear Regression: Y = mx + b
+Where:
+- Y: Dependent variable (target)
+- x: Independent variable (feature)
+- m: Slope (rate of change)
+- b: Y-intercept (value when x=0)
+
+Multiple Linear Regression: Y = b₀ + b₁x₁ + b₂x₂ + ... + bₙxₙ
+
+GOAL:
+Find the best-fitting line that minimizes the sum of squared residuals (differences between actual and predicted values).
+
+WHY LINEAR REGRESSION?
+=====================
+
+ADVANTAGES:
+1. Simple and interpretable
+2. Fast training and prediction
+3. No hyperparameters to tune
+4. Provides coefficient importance
+5. Works well for linear relationships
+6. Good baseline model
+7. Probabilistic predictions possible
+
+DISADVANTAGES:
+1. Assumes linear relationship
+2. Sensitive to outliers
+3. Requires feature scaling
+4. Assumes independence of errors
+5. May overfit with many features
+6. Assumes homoscedasticity (constant variance)
+
+ASSUMPTIONS:
+1. Linearity: Relationship between X and Y is linear
+2. Independence: Observations are independent
+3. Homoscedasticity: Constant variance of residuals
+4. Normality: Residuals are normally distributed
+5. No multicollinearity: Features are not highly correlated
+
+TYPES OF REGRESSION:
+1. Simple Linear: One independent variable
+2. Multiple Linear: Multiple independent variables
+3. Polynomial: Non-linear relationships using polynomial terms
+4. Ridge: L2 regularization to prevent overfitting
+5. Lasso: L1 regularization with feature selection
+6. Elastic Net: Combination of Ridge and Lasso
+
+EVALUATION METRICS:
+- Mean Squared Error (MSE): Average of squared residuals
+- Root Mean Squared Error (RMSE): Square root of MSE
+- Mean Absolute Error (MAE): Average of absolute residuals
+- R-squared: Proportion of variance explained by model
+- Adjusted R-squared: R-squared adjusted for number of features
+
+WHY CHOSEN FOR THIS DATASET:
+- Age and Salary have potential linear relationship
+- Simple interpretable model for business decisions
+- Can handle both numerical and encoded categorical data
+- Provides clear coefficient interpretation
+
+ALTERNATIVE ALGORITHMS:
+- Polynomial Regression: For non-linear relationships
+- Decision Tree Regression: For non-linear, interpretable models
+- Random Forest: Ensemble method for better accuracy
+- Support Vector Regression: For high-dimensional data
+- Neural Networks: For complex non-linear patterns
+- Gradient Boosting: For high-performance predictions
+
+PRACTICAL APPLICATIONS:
+- Salary prediction based on experience
+- Sales forecasting
+- Price estimation
+- Risk assessment
+- Economic modeling
+- Performance prediction
+
+DATA PREPROCESSING CONSIDERATIONS:
+- Handle categorical variables (encoding)
+- Scale numerical features if needed
+- Remove or handle outliers
+- Check for multicollinearity
+- Validate linear relationship assumptions
+
+FEATURE ENGINEERING:
+- Create polynomial features for non-linearity
+- Interaction terms between features
+- Log transformations for skewed data
+- Binning continuous variables
+- Domain-specific feature creation
+
+MODEL INTERPRETATION:
+- Coefficient values show feature importance
+- Positive/negative coefficients show relationship direction
+- Intercept represents baseline prediction
+- R-squared shows model explanatory power
+- Residual analysis reveals model adequacy

@@ -65,16 +65,13 @@ void explore() {
             
             string yValue = r[yColumn];
             
-            // Handle salary values (remove 'k')
             if (yValue.find('k') != string::npos) {
                 yValue.erase(remove(yValue.begin(), yValue.end(), 'k'), yValue.end());
                 y = stod(yValue);
             }
-            // Handle performance values (encode as numbers)
             else if (yValue == "poor") y = 1;
             else if (yValue == "average") y = 2;
             else if (yValue == "good") y = 3;
-            // Handle direct numeric values
             else y = stod(yValue);
             
             sumX += x; sumY += y;
@@ -103,16 +100,13 @@ void preprocess() {
             
             string yValue = r[yColumn];
             
-            // Handle salary values (remove 'k')
             if (yValue.find('k') != string::npos) {
                 yValue.erase(remove(yValue.begin(), yValue.end(), 'k'), yValue.end());
                 y = stod(yValue);
             }
-            // Handle performance values (encode as numbers)
             else if (yValue == "poor") y = 1;
             else if (yValue == "average") y = 2;
             else if (yValue == "good") y = 3;
-            // Handle direct numeric values
             else y = stod(yValue);
             
             X.push_back(x);

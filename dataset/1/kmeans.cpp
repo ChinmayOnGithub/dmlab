@@ -170,7 +170,7 @@ void performClustering() {
     
     cout << "Clustering completed" << endl;
     
-    // Show final cluster assignments
+
     vector<int> finalClusters = assignClusters(centroids);
     vector<int> clusterSizes(k, 0);
     

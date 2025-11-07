@@ -35,7 +35,6 @@ bool loadCSV(const string& filename) {
         while (getline(ss, cell, ',')) {
             string item = trim(cell);
             if (!item.empty()) {
-                // Convert to lowercase for consistency
                 for (auto &c : item) c = tolower(c);
                 transaction.push_back(item);
             }
@@ -144,7 +143,7 @@ void generateFrequentItemsets() {
     int minSupportCount = (int)(minSupport * transactions.size());
     cout << "Minimum support count: " << minSupportCount << endl;
     
-    // Generate frequent 1-itemsets
+
     map<string, int> itemSupport = getItemSupport();
     vector<string> frequentItems;
     
@@ -157,7 +156,7 @@ void generateFrequentItemsets() {
         }
     }
     
-    // Generate frequent 2-itemsets
+
     vector<set<string>> candidate2Itemsets;
     for (int i = 0; i < frequentItems.size(); i++) {
         for (int j = i + 1; j < frequentItems.size(); j++) {
@@ -191,7 +190,7 @@ void generateAssociationRules() {
     
     int minSupportCount = (int)(minSupport * transactions.size());
     
-    // Get frequent 2-itemsets for rule generation
+
     vector<set<string>> candidate2Itemsets;
     map<string, int> itemSupport = getItemSupport();
     vector<string> frequentItems;
@@ -218,7 +217,7 @@ void generateAssociationRules() {
             const set<string>& itemset = pair.first;
             vector<string> items(itemset.begin(), itemset.end());
             
-            // Generate rules A -> B and B -> A
+
             for (int i = 0; i < items.size(); i++) {
                 string antecedent = items[i];
                 string consequent = items[1 - i];
